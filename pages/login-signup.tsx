@@ -29,47 +29,47 @@ export default function Login() {
   useEffect(() => {}, []);
 
   const attemptLogin = async (email: string, password: string) => {
-    const data = await login(email, password);
-    if (!data.errors) {
-      setError("");
-      const tokenData = data.data.loginUser;
-      // Add localstorage
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem("token", tokenData.token);
-        window.localStorage.setItem(
-          "tokenExpiration",
-          tokenData.tokenExpiration
-        );
-      }
-      // Set User
-      setUser(tokenData.user);
-      router.push("/");
-    } else {
-      const error = data.errors[0].message;
-      setError(error);
-    }
+    // const data = await login(email, password);
+    // if (!data.errors) {
+    //   setError("");
+    //   const tokenData = data.data.loginUser;
+    //   // Add localstorage
+    //   if (typeof window !== "undefined") {
+    //     window.localStorage.setItem("token", tokenData.token);
+    //     window.localStorage.setItem(
+    //       "tokenExpiration",
+    //       tokenData.tokenExpiration
+    //     );
+    //   }
+    //   // Set User
+    //   setUser(tokenData.user);
+    //   router.push("/");
+    // } else {
+    //   const error = data.errors[0].message;
+    //   setError(error);
+    // }
   };
 
   const attemptSignUp = async (userData: Data) => {
-    const data = await signUp(userData);
-    if (!data.errors) {
-      const tokenData = data.data.signUpUser;
-      setPhase("signin");
-      setError("");
-      clearData();
-      // toast(`Sign up is successful. Please Login to continue`, {
-      //   position: "top-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
-    } else {
-      const error = data.errors[0].message;
-      setError(error);
-    }
+    // const data = await signUp(userData);
+    // if (!data.errors) {
+    //   const tokenData = data.data.signUpUser;
+    //   setPhase("signin");
+    //   setError("");
+    //   clearData();
+    //   // toast(`Sign up is successful. Please Login to continue`, {
+    //   //   position: "top-right",
+    //   //   autoClose: 5000,
+    //   //   hideProgressBar: false,
+    //   //   closeOnClick: true,
+    //   //   pauseOnHover: true,
+    //   //   draggable: true,
+    //   //   progress: undefined,
+    //   // });
+    // } else {
+    //   const error = data.errors[0].message;
+    //   setError(error);
+    // }
   };
 
   const togglePhase = () => {
@@ -96,20 +96,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      {/* Toast */}
-      {/* <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      /> */}
-      {/* Same as */}
-      {/* <ToastContainer /> */}
       <div className="max-w-lg w-full space-y-8">
         <div>
           <img
@@ -119,7 +105,7 @@ export default function Login() {
           />
           <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900"></h1>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Setel Mart, buy groceries with ease
+            JITERA bidding App, one stop center for bidding
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             {phase === "signin" ? "Sign In" : "Create new account"}{" "}
@@ -150,22 +136,6 @@ export default function Login() {
                 placeholder="Jone Doe"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className={`${phase === "signin" ? "hidden" : "block"}`}>
-              <label htmlFor="phone-number" className="sr-only">
-                Phone Number
-              </label>
-              <input
-                id="phone-number"
-                name="phone"
-                type="text"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="0123456789"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             <div>

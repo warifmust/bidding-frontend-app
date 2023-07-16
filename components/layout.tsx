@@ -4,15 +4,14 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { Fragment, useContext } from "react";
 import { UserContext } from "../context/userContext";
-import Announcement from "./announcement";
 
-const name = "Setel Mart";
+const name = "Jitera Bidding Platform";
 export const siteTitle = "Next.js Sample Website";
 
 const navigation = [
   { name: "Home", href: "/", scrollTo: "", public: true },
-  { name: "Cart", href: "/cart", scrollTo: "", public: true },
-  { name: "Payment", href: "/payment", scrollTo: "", public: true },
+  { name: "Create new item", href: "/create-item", scrollTo: "", public: true },
+  { name: "Deposit", href: "/deposit", scrollTo: "", public: true },
 ];
 
 export default function Layout({ children }) {
@@ -77,7 +76,7 @@ export default function Layout({ children }) {
                       })}
                       <span className="font-medium text-indigo-600 hover:text-indigo-500">
                         {user?.name ? (
-                          <Link href="/account">{`Hello, ${user.name}`}</Link>
+                          <Link href="/">{`Hello, ${user.name}`}</Link>
                         ) : (
                           <Link href="/login-signup">Log in</Link>
                         )}
@@ -147,7 +146,7 @@ export default function Layout({ children }) {
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="lg:text-center">
                   <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-                    SETEL MART
+                    JITERA BIDDING APP
                   </h2>
                   <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     A better way shop groceries
