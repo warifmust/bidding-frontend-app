@@ -16,6 +16,7 @@
     "next": "latest",
     "react": "^17.0.1",
     "react-anchor-link-smooth-scroll": "^1.0.12",
+    "react-countdown": "^2.3.5",
     "react-dom": "^17.0.1",
     "react-toastify": "^7.0.4"
   },

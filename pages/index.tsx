@@ -1,55 +1,50 @@
 import Layout from "../components/layout";
-import { ShoppingBagIcon } from "@heroicons/react/outline";
-import Link from "next/link";
 import { useState } from "react";
 import BidModal from "./bid-modal";
+import Countdown from "react-countdown";
 
 const products = [
   {
     id: 1,
-    name: "Basic Tee",
-    href: "#",
+    name: "Apple MacBook Pro 17",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
+    price: "$2999",
   },
   {
     id: 2,
-    name: "Basic Tee",
-    href: "#",
+    name: "T Shirt",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
     price: "$35",
-    color: "Black",
   },
   {
     id: 3,
-    name: "Basic Tee",
-    href: "#",
+    name: "Jacket",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
     price: "$35",
-    color: "Black",
   },
-  {
-    id: 4,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
-  },
-  // More products...
 ];
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+  const [selectedItemName, setSelectedItemName] = useState("");
+  const Expired = () => <span>Item expired</span>;
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      // Call endpoint to invalidate item for bidding
+      return <Expired />;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {hours}:{minutes}:{seconds}
+        </span>
+      );
+    }
+  };
 
   return (
     <Layout>
@@ -67,49 +62,64 @@ export default function Home() {
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
             Available items to bid
           </h2>
-
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="group relative"
-                onClick={() => setShowModal(true)}
-              >
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <a href={product.href}>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.name}
-                      </a>
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">
-                      {product.color}
-                    </p>
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {product.price}
-                  </p>
-                  <button
-                    className="rounded-md mr-4 bg-indigo-600 uppercase cursor-pointer px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    type="button"
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Product name
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Duration
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    key={product.id}
                   >
-                    Bid
-                  </button>
-                </div>
-              </div>
-            ))}
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {product.name}
+                    </th>
+                    <td className="px-6 py-4">{product.price}</td>
+                    <td className="px-6 py-4">
+                      <Countdown date={Date.now() + 5000} renderer={renderer} />
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        className="rounded-md mr-4 bg-indigo-600 uppercase cursor-pointer px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        type="button"
+                        onClick={() => {
+                          setShowModal(true);
+                          setSelectedItemName(product.name);
+                        }}
+                      >
+                        Bid
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <BidModal showModal={showModal} setShowModal={setShowModal} />
+      <BidModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        itemName={selectedItemName}
+      />
     </Layout>
   );
 }
