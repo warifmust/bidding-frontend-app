@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { Fragment, useContext } from "react";
 import { UserContext } from "../context/userContext";
+import router from "next/router";
 
 const name = "Jitera Bidding Platform";
 export const siteTitle = "Next.js Sample Website";
@@ -16,6 +17,13 @@ const navigation = [
 
 export default function Layout({ children }) {
   const { user } = useContext(UserContext);
+  const clearLocalStorage = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    router.reload();
+    router.push("/");
+  };
 
   return (
     <div className="relative bg-white overflow-hidden">
@@ -59,28 +67,43 @@ export default function Layout({ children }) {
                         </div>
                       </div>
                     </div>
-                    <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                      {navigation.map((item, index) => {
-                        if (item.public) {
-                          return (
-                            <span
-                              key={index}
-                              className="font-medium text-gray-500 hover:text-gray-900"
-                            >
-                              <Link key={item.name} href={item.href}>
-                                {item.name}
-                              </Link>
+                    <div className="flex justify-between">
+                      <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
+                        {navigation.map((item, index) => {
+                          if (item.public) {
+                            return (
+                              <span
+                                key={index}
+                                className="font-medium text-gray-500 hover:text-gray-900"
+                              >
+                                <Link key={item.name} href={item.href}>
+                                  {item.name}
+                                </Link>
+                              </span>
+                            );
+                          }
+                        })}
+                        <span className="font-medium text-indigo-600 hover:text-indigo-500">
+                          {user?.name ? (
+                            <Link href="/">{`Hello, ${user.name}`}</Link>
+                          ) : (
+                            <Link href="/login-signup">Log in</Link>
+                          )}
+                        </span>
+                        {user && (
+                          <>
+                            <span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                              Balance: {`RM ${user.balanceAmount}`}
                             </span>
-                          );
-                        }
-                      })}
-                      <span className="font-medium text-indigo-600 hover:text-indigo-500">
-                        {user?.name ? (
-                          <Link href="/">{`Hello, ${user.name}`}</Link>
-                        ) : (
-                          <Link href="/login-signup">Log in</Link>
+                            <span
+                              className="font-medium text-red-600 hover:text-indigo-500 cursor-pointer"
+                              onClick={clearLocalStorage}
+                            >
+                              Log out
+                            </span>
+                          </>
                         )}
-                      </span>
+                      </div>
                     </div>
                   </nav>
                 </div>

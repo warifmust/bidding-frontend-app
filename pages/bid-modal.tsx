@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { bidItem } from "./api/api";
 
-export default function BidModal({ showModal, setShowModal, itemName }) {
+interface BidInterface {
+  itemId: string;
+  price: number;
+}
+
+export default function BidModal({ showModal, setShowModal, selectedItem }) {
+  const [offeredBidPrice, setOfferedBidPrice] = useState<number>();
+
+  const submitForm = async (e: any, data: BidInterface) => {
+    e.preventDefault();
+    await bidItem(data.price, data.itemId);
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal ? (
@@ -11,7 +25,9 @@ export default function BidModal({ showModal, setShowModal, itemName }) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">{itemName}</h3>
+                  <h3 className="text-3xl font-semibold">
+                    {selectedItem.itemName}
+                  </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -28,8 +44,10 @@ export default function BidModal({ showModal, setShowModal, itemName }) {
                     name="price"
                     type="text"
                     required
-                    className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     placeholder="Enter your bid price"
+                    value={offeredBidPrice}
+                    onChange={(e) => setOfferedBidPrice(e.target.value as any)}
                   />
                 </div>
                 {/*footer*/}
@@ -44,7 +62,12 @@ export default function BidModal({ showModal, setShowModal, itemName }) {
                   <button
                     className="rounded-md mr-4 bg-indigo-600 uppercase cursor-pointer px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={(e) => {
+                      submitForm(e, {
+                        price: offeredBidPrice,
+                        itemId: selectedItem._id,
+                      });
+                    }}
                   >
                     Save Changes
                   </button>

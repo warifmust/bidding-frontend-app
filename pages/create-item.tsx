@@ -1,6 +1,25 @@
+import router from "next/router";
 import Layout from "../components/layout";
+import { createItem } from "./api/api";
+import { useState } from "react";
+
+interface CreateItemInterface {
+  itemName: string;
+  price: number;
+  durationInMinutes: number;
+}
 
 export default function CreateItem() {
+  const [itemName, setItemName] = useState<string>("");
+  const [price, setPrice] = useState<number>();
+  const [timeWindow, setTimeWindow] = useState<number>();
+
+  const submitForm = async (e: any, data: CreateItemInterface) => {
+    e.preventDefault();
+    await createItem(data.itemName, data.price, data.durationInMinutes);
+    router.push("/");
+  };
+
   return (
     <Layout>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -31,7 +50,10 @@ export default function CreateItem() {
                   type="name"
                   autoComplete="name"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Please insert the item name"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
                 />
               </div>
             </div>
@@ -47,10 +69,13 @@ export default function CreateItem() {
                 <input
                   id="price"
                   name="price"
-                  type="price"
+                  type="number"
                   autoComplete="price"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Price in RM"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value as any)}
                 />
               </div>
             </div>
@@ -66,10 +91,13 @@ export default function CreateItem() {
                 <input
                   id="durationInMinutes"
                   name="durationInMinutes"
-                  type="durationInMinutes"
+                  type="number"
                   autoComplete="durationInMinutes"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Time in minutes"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={timeWindow}
+                  onChange={(e) => setTimeWindow(e.target.value as any)}
                 />
               </div>
             </div>
@@ -78,6 +106,13 @@ export default function CreateItem() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={(e) =>
+                  submitForm(e, {
+                    itemName,
+                    price,
+                    durationInMinutes: timeWindow,
+                  })
+                }
               >
                 Create
               </button>

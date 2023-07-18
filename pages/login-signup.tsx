@@ -1,8 +1,8 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import { login, signUp } from "../api/baseApi";
 import { UserContext } from "../context/userContext";
+import { register, signIn } from "./api/api";
 // import { toast, ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
@@ -12,7 +12,6 @@ interface Data {
   email: string;
   password: string;
   name?: string;
-  phoneNumber?: string;
 }
 
 export default function Login() {
@@ -29,47 +28,31 @@ export default function Login() {
   useEffect(() => {}, []);
 
   const attemptLogin = async (email: string, password: string) => {
-    // const data = await login(email, password);
-    // if (!data.errors) {
-    //   setError("");
-    //   const tokenData = data.data.loginUser;
-    //   // Add localstorage
-    //   if (typeof window !== "undefined") {
-    //     window.localStorage.setItem("token", tokenData.token);
-    //     window.localStorage.setItem(
-    //       "tokenExpiration",
-    //       tokenData.tokenExpiration
-    //     );
-    //   }
-    //   // Set User
-    //   setUser(tokenData.user);
-    //   router.push("/");
-    // } else {
-    //   const error = data.errors[0].message;
-    //   setError(error);
-    // }
+    const data = await signIn(email, password);
+    setUser(data);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("accessToken", data.accessToken);
+      window.localStorage.setItem("name", data.name);
+      window.localStorage.setItem("email", data.email);
+      window.localStorage.setItem("id", data.id);
+    }
+    router.push("/");
   };
 
   const attemptSignUp = async (userData: Data) => {
-    // const data = await signUp(userData);
-    // if (!data.errors) {
-    //   const tokenData = data.data.signUpUser;
-    //   setPhase("signin");
-    //   setError("");
-    //   clearData();
-    //   // toast(`Sign up is successful. Please Login to continue`, {
-    //   //   position: "top-right",
-    //   //   autoClose: 5000,
-    //   //   hideProgressBar: false,
-    //   //   closeOnClick: true,
-    //   //   pauseOnHover: true,
-    //   //   draggable: true,
-    //   //   progress: undefined,
-    //   // });
-    // } else {
-    //   const error = data.errors[0].message;
-    //   setError(error);
-    // }
+    const data = await register(
+      userData.name,
+      userData.email,
+      userData.password
+    );
+    setUser(data);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("accessToken", data.accessToken);
+      window.localStorage.setItem("name", data.name);
+      window.localStorage.setItem("email", data.email);
+      window.localStorage.setItem("id", data.id);
+    }
+    router.push("/");
   };
 
   const togglePhase = () => {
@@ -211,9 +194,7 @@ export default function Login() {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={(e) =>
-                submitForm(e, { name, email, password, phoneNumber })
-              }
+              onClick={(e) => submitForm(e, { name, email, password })}
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <LockClosedIcon

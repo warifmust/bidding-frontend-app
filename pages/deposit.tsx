@@ -1,6 +1,24 @@
+import { useContext, useState } from "react";
 import Layout from "../components/layout";
+import { deposit } from "./api/api";
+import { UserContext } from "../context/userContext";
+import router from "next/router";
+
+interface DepositInterface {
+  id: string;
+  balanceAmount: number;
+}
 
 export default function CreateItem() {
+  const [depositAmount, setDepositAmount] = useState<number>();
+  const { user, setUser } = useContext(UserContext);
+
+  const submitForm = async (e: any, data: DepositInterface) => {
+    e.preventDefault();
+    await deposit(data.id, data.balanceAmount);
+    router.push("/");
+  };
+
   return (
     <Layout>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -19,7 +37,7 @@ export default function CreateItem() {
           <form className="space-y-6" action="#" method="POST">
             <div>
               <label
-                htmlFor="price"
+                htmlFor="depositAmount"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Amount
@@ -28,10 +46,13 @@ export default function CreateItem() {
                 <input
                   id="depositAmount"
                   name="depositAmount"
-                  type="depositAmount"
+                  type="number"
                   autoComplete="depositAmount"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Amount in RM"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value as any)}
                 />
               </div>
             </div>
@@ -39,6 +60,9 @@ export default function CreateItem() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={(e) =>
+                  submitForm(e, { id: user._id, balanceAmount: depositAmount })
+                }
               >
                 Deposit
               </button>

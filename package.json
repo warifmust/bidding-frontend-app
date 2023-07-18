@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start"
   },
@@ -18,7 +18,9 @@
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-countdown": "^2.3.5",
     "react-dom": "^17.0.1",
-    "react-toastify": "^7.0.4"
+    "react-toastify": "^7.0.4",
+    "socket.io": "^4.7.1",
+    "socket.io-client": "^4.7.1"
   },
   "devDependencies": {
     "@types/node": "^15.12.2",
