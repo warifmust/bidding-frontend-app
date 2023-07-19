@@ -10,7 +10,6 @@ const name = "Jitera Bidding Platform";
 export const siteTitle = "Next.js Sample Website";
 
 const navigation = [
-  { name: "Home", href: "/", scrollTo: "", public: true },
   { name: "Create new item", href: "/create-item", scrollTo: "", public: true },
   { name: "Deposit", href: "/deposit", scrollTo: "", public: true },
 ];
@@ -51,7 +50,7 @@ export default function Layout({ children }) {
                     aria-label="Global"
                   >
                     <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-                      <div className="flex items-center justify-between w-full md:w-auto">
+                      <div className="flex items-center justify-between w-full md:w-auto cursor-pointer">
                         <span className="sr-only">Workflow</span>
                         <Link href="/">
                           <img
@@ -76,7 +75,10 @@ export default function Layout({ children }) {
                                 key={index}
                                 className="font-medium text-gray-500 hover:text-gray-900"
                               >
-                                <Link key={item.name} href={item.href}>
+                                <Link
+                                  key={item.name}
+                                  href={user ? item.href : "/login-signup"}
+                                >
                                   {item.name}
                                 </Link>
                               </span>

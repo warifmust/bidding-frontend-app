@@ -45,8 +45,6 @@ export const register = async (
 };
 
 export const deposit = async (id: string, balanceAmount: number) => {
-  console.log({ id, balanceAmount });
-
   const data = await fetch("http://localhost:3000/users/deposit", {
     method: "PUT",
     headers: headers,
@@ -76,11 +74,42 @@ export const createItem = async (
   return response;
 };
 
-export const bidItem = async (price: number, itemId: string) => {
+export const bidItem = async (
+  price: number,
+  itemId: string,
+  bidderName: string
+) => {
   const data = await fetch("http://localhost:3000/bids", {
     method: "POST",
     headers: headers,
-    body: JSON.stringify({ price, itemId }),
+    body: JSON.stringify({ price, itemId, bidderName }),
+  });
+  const response = await data.json();
+  return response;
+};
+
+export const getListOfBidsItemId = async (itemId: string) => {
+  const data = await fetch(`http://localhost:3000/bids/items/${itemId}`, {
+    method: "GET",
+    headers: headers,
+  });
+  const response = await data.json();
+  return response;
+};
+
+export const expireItem = async (itemId: string) => {
+  const data = await fetch(`http://localhost:3000/items/expire/${itemId}`, {
+    method: "PUT",
+    headers: headers,
+  });
+  const response = await data.json();
+  return response;
+};
+
+export const nominateBidWinner = async (itemId: string) => {
+  const data = await fetch(`http://localhost:3000/bids/nominate/${itemId}`, {
+    method: "PUT",
+    headers: headers,
   });
   const response = await data.json();
   return response;
