@@ -6,6 +6,7 @@ export interface BidInterface {
   itemId: string;
   price: number;
   bidderName: string;
+  bidderId: string;
   createdAt?: string;
 }
 
@@ -14,7 +15,7 @@ export default function BidModal({ showModal, setShowModal, selectedItem }) {
   const { user, setUser } = useContext(UserContext);
   const submitForm = async (e: any, data: BidInterface) => {
     e.preventDefault();
-    await bidItem(data.price, data.itemId, data.bidderName);
+    await bidItem(data.price, data.itemId, data.bidderName, data.bidderId);
     setShowModal(false);
   };
 
@@ -70,6 +71,7 @@ export default function BidModal({ showModal, setShowModal, selectedItem }) {
                         price: offeredBidPrice,
                         itemId: selectedItem._id,
                         bidderName: user.name,
+                        bidderId: user._id,
                       });
                     }}
                   >

@@ -77,9 +77,10 @@ export const createItem = async (
 export const bidItem = async (
   price: number,
   itemId: string,
-  bidderName: string
+  bidderName: string,
+  userId: string
 ) => {
-  const data = await fetch("http://localhost:3000/bids", {
+  const data = await fetch(`http://localhost:3000/bids/${userId}`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({ price, itemId, bidderName }),

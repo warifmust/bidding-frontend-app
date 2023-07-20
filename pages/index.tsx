@@ -79,6 +79,10 @@ export default function Home() {
     getCurrentUser();
   }, []);
 
+  useEffect(() => {
+    getCurrentUser();
+  }, [showModal]);
+
   const handleShowBidsForItem = async (item: IItem) => {
     setSelectedItem(item);
     await getListOfBids(item._id);
