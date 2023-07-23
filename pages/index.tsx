@@ -33,21 +33,7 @@ export default function Home() {
   const [items, setItems] = useState<Array<IItem>>();
   const [bids, setBids] = useState<Array<BidInterface>>();
   const [bidStatus, setBidStatus] = useState<IBidStatus>(BidStatus.ONGOING);
-
   const { user, setUser } = useContext(UserContext);
-
-  const renderer = ({ hours, minutes, seconds, completed }, item: IItem) => {
-    if (completed) {
-      expireThisItem(item);
-      return <span>Item expired</span>;
-    } else {
-      return (
-        <span>
-          {hours}:{minutes}:{seconds}
-        </span>
-      );
-    }
-  };
 
   const expireThisItem = async (item: IItem) => {
     Promise.all([
@@ -77,6 +63,10 @@ export default function Home() {
   useEffect(() => {
     getAllItems();
     getCurrentUser();
+    const socket = new WebSocket("ws://localhost:3000");
+    socket.addEventListener("open", () => {
+      socket.send("Connection established to server.");
+    });
   }, []);
 
   useEffect(() => {
@@ -87,6 +77,19 @@ export default function Home() {
     setSelectedItem(item);
     await getListOfBids(item._id);
     setShowBidsListModal(true);
+  };
+
+  const renderer = ({ hours, minutes, seconds, completed }, item: IItem) => {
+    if (completed) {
+      expireThisItem(item);
+      return <span>Item expired</span>;
+    } else {
+      return (
+        <span>
+          {hours}:{minutes}:{seconds}
+        </span>
+      );
+    }
   };
 
   return (

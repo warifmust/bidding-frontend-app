@@ -30,13 +30,15 @@ export default function Login() {
   const attemptLogin = async (email: string, password: string) => {
     const data = await signIn(email, password);
     setUser(data);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("accessToken", data.accessToken);
-      window.localStorage.setItem("name", data.name);
-      window.localStorage.setItem("email", data.email);
-      window.localStorage.setItem("id", data.id);
+    if (!data.error) {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("accessToken", data.accessToken);
+        window.localStorage.setItem("name", data.name);
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("id", data.id);
+      }
+      router.push("/");
     }
-    router.push("/");
   };
 
   const attemptSignUp = async (userData: Data) => {
@@ -45,14 +47,16 @@ export default function Login() {
       userData.email,
       userData.password
     );
-    setUser(data);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("accessToken", data.accessToken);
-      window.localStorage.setItem("name", data.name);
-      window.localStorage.setItem("email", data.email);
-      window.localStorage.setItem("id", data.id);
+    if (!data.error) {
+      setUser(data);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("accessToken", data.accessToken);
+        window.localStorage.setItem("name", data.name);
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("id", data.id);
+      }
+      router.push("/");
     }
-    router.push("/");
   };
 
   const togglePhase = () => {
