@@ -28,6 +28,14 @@ The apps can be open in multiple windows to view on a higher scale.
 
 To test the Sign Up without those users above, please use the Sign Up page instead and create a new user.
 
+# Env files
+
+To ensure everything works fine, please insert this environment variable into `.env.local`.
+```
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:3000
+```
+
 # Content included
 1. Authentication (Login and Sign Up).
 2. Create new item to be bid.

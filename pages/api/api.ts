@@ -2,8 +2,11 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+export const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+export const websocketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL;
+
 export const getItems = async () => {
-  const data = await fetch("http://localhost:3000/items", {
+  const data = await fetch(`${serverUrl}/items`, {
     method: "GET",
     headers: headers,
   });
@@ -12,7 +15,7 @@ export const getItems = async () => {
 };
 
 export const getUserById = async (id: string) => {
-  const data = await fetch(`http://localhost:3000/users/${id}`, {
+  const data = await fetch(`${serverUrl}/users/${id}`, {
     method: "GET",
     headers: headers,
   });
@@ -21,7 +24,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const signIn = async (email: string, password: string) => {
-  const data = await fetch("http://localhost:3000/auth/sign-in", {
+  const data = await fetch(`${serverUrl}/auth/sign-in`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({ email, password }),
@@ -35,7 +38,7 @@ export const register = async (
   email: string,
   password: string
 ) => {
-  const data = await fetch("http://localhost:3000/auth/register", {
+  const data = await fetch(`${serverUrl}/auth/register`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({ name, email, password }),
@@ -45,7 +48,7 @@ export const register = async (
 };
 
 export const deposit = async (id: string, balanceAmount: number) => {
-  const data = await fetch("http://localhost:3000/users/deposit", {
+  const data = await fetch(`${serverUrl}/users/deposit`, {
     method: "PUT",
     headers: headers,
     body: JSON.stringify({ id, balanceAmount }),
@@ -59,7 +62,7 @@ export const createItem = async (
   price: number,
   durationInMinutes: number
 ) => {
-  const data = await fetch("http://localhost:3000/items", {
+  const data = await fetch(`${serverUrl}/items`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
@@ -80,7 +83,7 @@ export const bidItem = async (
   bidderName: string,
   userId: string
 ) => {
-  const data = await fetch(`http://localhost:3000/bids/${userId}`, {
+  const data = await fetch(`${serverUrl}/bids/${userId}`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({ price, itemId, bidderName }),
@@ -90,7 +93,7 @@ export const bidItem = async (
 };
 
 export const getListOfBidsItemId = async (itemId: string) => {
-  const data = await fetch(`http://localhost:3000/bids/items/${itemId}`, {
+  const data = await fetch(`${serverUrl}/bids/items/${itemId}`, {
     method: "GET",
     headers: headers,
   });
@@ -99,7 +102,7 @@ export const getListOfBidsItemId = async (itemId: string) => {
 };
 
 export const expireItem = async (itemId: string) => {
-  const data = await fetch(`http://localhost:3000/items/expire/${itemId}`, {
+  const data = await fetch(`${serverUrl}/items/expire/${itemId}`, {
     method: "PUT",
     headers: headers,
   });
@@ -108,7 +111,7 @@ export const expireItem = async (itemId: string) => {
 };
 
 export const nominateBidWinner = async (itemId: string) => {
-  const data = await fetch(`http://localhost:3000/bids/nominate/${itemId}`, {
+  const data = await fetch(`${serverUrl}/bids/nominate/${itemId}`, {
     method: "PUT",
     headers: headers,
   });

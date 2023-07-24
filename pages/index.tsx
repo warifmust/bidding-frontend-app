@@ -8,6 +8,7 @@ import {
   getListOfBidsItemId,
   getUserById,
   nominateBidWinner,
+  websocketUrl,
 } from "./api/api";
 import { UserContext } from "../context/userContext";
 import router from "next/router";
@@ -63,7 +64,7 @@ export default function Home() {
   useEffect(() => {
     getAllItems();
     getCurrentUser();
-    const socket = new WebSocket("ws://localhost:3000");
+    const socket = new WebSocket(websocketUrl);
     socket.addEventListener("open", () => {
       socket.send("Connection established to server.");
     });
